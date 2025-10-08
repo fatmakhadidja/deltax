@@ -1,3 +1,4 @@
+import 'package:deltax/ui/screens/change_password.dart';
 import 'package:deltax/ui/screens/connexion.dart';
 import 'package:deltax/ui/screens/inscription.dart';
 import 'package:deltax/ui/screens/profil.dart';
@@ -7,6 +8,7 @@ class AppRoutes {
   static const String connexion = '/connexion';
   static const String inscription = '/inscription';
   static const String profil = '/profil';
+  static const String changePassword = '/changePassword';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -16,6 +18,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const Inscription());
       case profil:
         return MaterialPageRoute(builder: (_) => const Profil());
+      case changePassword :
+        return MaterialPageRoute(builder: (_) => const ChangePassword()); 
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

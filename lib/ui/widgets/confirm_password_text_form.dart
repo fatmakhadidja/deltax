@@ -44,7 +44,7 @@ class _ConfirmPasswordTextFormState extends State<ConfirmPasswordTextForm> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: "Comfirmer le mot de passe",
+                text: widget.label,
                 style: AppTextStyles.body1(
                   color: AppColors.darkGrey,
                   fontSize: 18,

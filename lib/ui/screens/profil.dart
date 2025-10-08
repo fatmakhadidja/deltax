@@ -1,3 +1,4 @@
+import 'package:deltax/routes/routes.dart';
 import 'package:deltax/ui/widgets/name_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:deltax/core/const/colors.dart';
@@ -13,43 +14,65 @@ class Profil extends StatefulWidget {
 }
 
 class _ProfilState extends State<Profil> {
+  File? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImageFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  late TextEditingController prenomCtrl;
+  late TextEditingController nomCtrl;
+  late TextEditingController usernameCtrl;
+  late TextEditingController emailCtrl;
+  late TextEditingController phoneCtrl;
+  late TextEditingController adresseCtrl;
+
+  final List<Color> colors = [
+    AppColors.orange,
+    AppColors.pink,
+    Colors.red,
+    Colors.yellow,
+    Colors.green,
+    Colors.blue,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    prenomCtrl = TextEditingController(text: "Walid");
+    nomCtrl = TextEditingController(text: "Boufroune");
+    usernameCtrl = TextEditingController(text: "boufrounewalid@gmail.com");
+    emailCtrl = TextEditingController(text: "boufrounewalid@gmail.com");
+    phoneCtrl = TextEditingController(text: "0558629858");
+    adresseCtrl = TextEditingController(text: "Bordj El Kiffan, Alger");
+  }
+
+  @override
+  void dispose() {
+    prenomCtrl.dispose();
+    nomCtrl.dispose();
+    usernameCtrl.dispose();
+    emailCtrl.dispose();
+    phoneCtrl.dispose();
+    adresseCtrl.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Déclare-les en haut du State
-    final prenomCtrl = TextEditingController(text: "Walid");
-    final nomCtrl = TextEditingController(text: "boufroune");
-    final usernameCtrl = TextEditingController(
-      text: "boufrounewalid@gmail.com",
-    );
-    final emailCtrl = TextEditingController(text: "boufrounewalid@gmail.com");
-    final phoneCtrl = TextEditingController(text: "0558629858");
-    final adresseCtrl = TextEditingController(text: "Bordj El Kiffan, Alger");
-    final List<Color> colors = [
-      AppColors.orange,
-      AppColors.pink,
-      Colors.red,
-      Colors.yellow,
-      Colors.green,
-      Colors.blue,
-    ];
+
     final int charCode = usernameCtrl.text.isNotEmpty
         ? usernameCtrl.text[0].toUpperCase().codeUnitAt(0)
         : 65; // 'A' = 65
     final int colorIndex = charCode % colors.length; // modulo to stay in range
     final Color avatarColor = colors[colorIndex];
-
-    File? _imageFile;
-    final ImagePicker _picker = ImagePicker();
-
-    Future<void> _pickImageFromGallery() async {
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-      if (pickedFile != null) {
-        setState(() {
-          _imageFile = File(pickedFile.path);
-        });
-      }
-    }
 
     return Scaffold(
       backgroundColor: AppColors.lightLightGrey,
@@ -140,7 +163,7 @@ class _ProfilState extends State<Profil> {
 
                       // Email
                       Text(
-                        "boufrounewalid@gmail.com",
+                        emailCtrl.text,
                         style: AppTextStyles.heading2(
                           color: Colors.black,
                           fontSize: 18,
@@ -148,7 +171,7 @@ class _ProfilState extends State<Profil> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        "boufrounewalid@gmail.com",
+                        usernameCtrl.text,
                         style: AppTextStyles.body1(fontSize: 14),
                       ),
 
@@ -202,7 +225,12 @@ class _ProfilState extends State<Profil> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.changePassword,
+                            );
+                          },
                           icon: const Icon(Icons.key, size: 18),
                           label: const Text("Modifier Mot de Passe"),
                           style: ElevatedButton.styleFrom(
@@ -258,6 +286,7 @@ class _ProfilState extends State<Profil> {
                         controller: prenomCtrl,
                         label: "Prénom",
                         hint: "Entrez votre prénom",
+                        value: prenomCtrl.text,
                       ),
                       const SizedBox(height: 15),
 
@@ -274,6 +303,7 @@ class _ProfilState extends State<Profil> {
                         controller: usernameCtrl,
                         label: "Nom d'utilisateur",
                         hint: "Entrez votre nom d'utilisateur",
+                        value: usernameCtrl.text,
                       ),
                       const SizedBox(height: 15),
 
@@ -336,6 +366,7 @@ class _ProfilState extends State<Profil> {
                           ),
                           child: ElevatedButton.icon(
                             onPressed: () {
+                              setState(() {});
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
@@ -346,6 +377,7 @@ class _ProfilState extends State<Profil> {
                             },
                             icon: const Icon(Icons.save),
                             label: const Text("Enregistrer les modifications"),
+
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent, // important
                               shadowColor: Colors

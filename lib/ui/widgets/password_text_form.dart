@@ -36,7 +36,7 @@ class _PasswordTextFormState extends State<PasswordTextForm> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: "Mot de passe",
+                text: widget.label,
                 style: AppTextStyles.body1(
                   color: AppColors.darkGrey,
                   fontSize: 18,

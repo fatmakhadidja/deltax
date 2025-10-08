@@ -6,12 +6,14 @@ class NameTextForm extends StatefulWidget {
   final String label;
   final String hint;
   final TextEditingController controller;
+  final String? value;
 
   const NameTextForm({
     super.key,
     required this.controller,
     required this.hint,
     required this.label,
+    this.value
   });
 
   @override
@@ -57,6 +59,12 @@ class _NameTextFormState extends State<NameTextForm> {
         ),
         focusColor: AppColors.orange,
       ),
+      onChanged: (value) => setState(() {
+        widget.controller.text = value;
+        widget.controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: widget.controller.text.length),
+        );
+      }),
 
       validator: (value) {
         if (value!.isEmpty) {
