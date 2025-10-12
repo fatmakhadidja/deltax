@@ -1,5 +1,3 @@
-import 'package:deltax/ui/screens/connexion.dart';
-import 'package:deltax/ui/screens/inscription.dart';
 import 'package:deltax/routes/routes.dart'; // <-- your routes file
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,3 @@
-import 'package:deltax/core/const/colors.dart';
 import 'package:deltax/core/const/text_styles.dart';
 import 'package:flutter/material.dart';
 
