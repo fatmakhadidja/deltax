@@ -1,7 +1,10 @@
-import 'package:deltax/routes/routes.dart'; // <-- your routes file
+import 'package:deltax/routes/routes.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'package:intl/date_symbol_data_local.dart';
+
+void main() async {
+  await initializeDateFormatting('fr_FR', null);
   runApp(const MyApp());
 }
 
@@ -17,6 +20,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
       initialRoute: AppRoutes.evenements,
       onGenerateRoute: AppRoutes.generateRoute,
     );
