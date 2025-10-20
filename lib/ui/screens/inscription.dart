@@ -131,7 +131,7 @@ class _InscriptionState extends State<Inscription> {
                   
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, AppRoutes.connexion);
+                                    Navigator.of(context).pop();
                                   },
                                   child: Text(
                                     "Se connecter",

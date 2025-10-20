@@ -103,10 +103,7 @@ class _ConnexionState extends State<Connexion> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.inscription,
-                                );
+                                Navigator.of(context).pushNamed('/inscription');
                               },
                               child: Text(
                                 "S'inscrire",
