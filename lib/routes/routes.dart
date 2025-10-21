@@ -1,4 +1,5 @@
 import 'package:deltax/ui/screens/accueil.dart';
+import 'package:deltax/ui/screens/annuaire.dart';
 import 'package:deltax/ui/screens/change_password.dart';
 import 'package:deltax/ui/screens/connexion.dart';
 import 'package:deltax/ui/screens/evenements.dart';
@@ -19,6 +20,7 @@ class AppRoutes {
   static const String accueil = '/accueil';
   static const String notifications = '/notifications';
   static const String reservations = '/reservations';
+  static const String annuaire = '/annuaire';
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case connexion:
@@ -39,6 +41,9 @@ class AppRoutes {
          return MaterialPageRoute(builder: (_) =>  Notifications()); 
       case reservations:
          return MaterialPageRoute(builder: (_) =>  Reservations());   
+      case annuaire :
+         return MaterialPageRoute(builder: (_) =>  Annuaire());   
+          
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

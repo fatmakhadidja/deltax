@@ -1,6 +1,6 @@
 import 'package:deltax/core/const/colors.dart';
 import 'package:deltax/core/const/text_styles.dart';
-import 'package:deltax/ui/screens/connexion.dart';
+import 'package:deltax/routes/routes.dart';
 import 'package:deltax/ui/screens/evenements.dart';
 import 'package:deltax/ui/widgets/button.dart';
 import 'package:deltax/ui/widgets/connexionNavigator.dart';
@@ -14,9 +14,6 @@ class Accueil extends StatefulWidget {
     Center(child: Text("accueil here")),
     Evenements(),
     ConnexionNavigator(),
-    Center(child: Text("menu here")),
-
-    // Menu()
   ];
   const Accueil({super.key});
 
@@ -89,7 +86,9 @@ class _AccueilState extends State<Accueil> {
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.annuaire);
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -169,6 +168,7 @@ class _AccueilState extends State<Accueil> {
       body: Accueil._pages[Accueil._selectedInd],
 
       bottomNavigationBar: BottomNavigationBar(
+        showUnselectedLabels: true,
         currentIndex: Accueil._selectedInd,
         onTap: (index) => _onItemTapped(index),
         selectedItemColor: AppColors.pink,
