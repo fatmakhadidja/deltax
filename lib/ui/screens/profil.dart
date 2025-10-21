@@ -76,6 +76,10 @@ class _ProfilState extends State<Profil> {
 
     return Scaffold(
       backgroundColor: AppColors.lightLightGrey,
+      appBar: AppBar(
+        title: const Text('Mon Profil'),
+        backgroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -83,16 +87,6 @@ class _ProfilState extends State<Profil> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Mon Profil",
-                  style: AppTextStyles.heading1(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 26,
-                  ),
-                ),
-                const SizedBox(height: 20),
-
                 // Profile Card
                 Container(
                   width: double.infinity,

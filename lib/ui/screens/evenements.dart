@@ -16,7 +16,7 @@ class Evenements extends StatefulWidget {
 class _EvenementsState extends State<Evenements> {
   final PopupController _popupLayerController = PopupController();
 
-  // 🔹 Liste complète des événements
+  //  Liste complète des événements
   final List<Map<String, dynamic>> _allEvents = [
     {
       'titre': 'Tandem en parapente',
@@ -72,12 +72,12 @@ class _EvenementsState extends State<Evenements> {
     },
   ];
 
-  // 🔹 Valeurs actuelles des filtres
+  //  Valeurs actuelles des filtres
   String _selectedCategorie = "Toutes";
   String _selectedPartenaire = "Tous";
   String _selectedWilaya = "Toutes";
 
-  // 🔹 Listes d'options
+  //  Listes d'options
   final List<String> _categories = [
     "Toutes",
     "Randonnée",
@@ -93,8 +93,8 @@ class _EvenementsState extends State<Evenements> {
   ];
   final List<String> _wilayas = ["Toutes", "Alger", "Boumerdès", "Tizi Ouzou"];
 
-  // 🔹 Liste affichée (filtrée après clic sur “Terminé”)
-  late List<Map<String, dynamic>> _displayedEvents;
+  //  Liste affichée (filtrée après clic sur “Terminé”)
+ List<Map<String, dynamic>> _displayedEvents = [];
 
   bool _filtersApplied = false;
 
@@ -118,7 +118,7 @@ class _EvenementsState extends State<Evenements> {
         final matchWilaya =
             _selectedWilaya == "Toutes" || event['wilaya'] == _selectedWilaya;
 
-        // ✅ Si "Non terminé" activé → événements futurs seulement
+        //  Si "Non terminé" activé → événements futurs seulement
         final matchDate = !_filtersApplied || event['date'].isAfter(now);
 
         return matchCategorie && matchPartenaire && matchWilaya && matchDate;
@@ -126,7 +126,7 @@ class _EvenementsState extends State<Evenements> {
     });
   }
 
-  // 🔹 Clic sur “Non terminé”
+  //  Clic sur “Non terminé”
   void _applyFilters() {
     setState(() {
       _filtersApplied = !_filtersApplied; // toggle uniquement ici
@@ -169,7 +169,7 @@ class _EvenementsState extends State<Evenements> {
     );
   }
 
-  // 🔹 Carte
+  //  Carte
   Widget _buildMap() {
     final center = LatLng(36.75, 3.06);
     final markers = _displayedEvents.map((event) {
@@ -210,7 +210,7 @@ class _EvenementsState extends State<Evenements> {
     );
   }
 
-  // 🔹 Carte popup
+  //  Carte popup
   Widget _buildPopupCard(Map<String, dynamic> event) {
     return Card(
       margin: const EdgeInsets.all(8),
@@ -331,7 +331,7 @@ class _EvenementsState extends State<Evenements> {
                   ),
                 ),
 
-                // 🔹 Filtres
+                //  Filtres
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
@@ -400,7 +400,7 @@ class _EvenementsState extends State<Evenements> {
 
                 const SizedBox(height: 10),
 
-                // 🔹 Liste filtrée
+                //  Liste filtrée
                 if (_displayedEvents.isEmpty)
                   const Padding(
                     padding: EdgeInsets.all(20),

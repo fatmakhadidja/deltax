@@ -1,13 +1,13 @@
 import 'package:deltax/core/const/colors.dart';
 import 'package:deltax/core/const/screenSize.dart';
 import 'package:deltax/core/const/text_styles.dart';
-import 'package:deltax/routes/routes.dart';
 import 'package:deltax/ui/widgets/button.dart';
 import 'package:deltax/ui/widgets/email_text_form.dart';
 import 'package:deltax/ui/widgets/googleButton.dart';
 import 'package:deltax/ui/widgets/password_text_form.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:deltax/core/providers/user_provider.dart';
 class Connexion extends StatefulWidget {
   const Connexion({super.key});
 
@@ -37,7 +37,8 @@ class _ConnexionState extends State<Connexion> {
             ),
           ),
           Center(
-            child: SingleChildScrollView( // 👈 added this
+            child: SingleChildScrollView(
+              //  added this
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -87,7 +88,15 @@ class _ConnexionState extends State<Connexion> {
                           child: "Se connecter",
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              print("Form is valid!");
+                              Provider.of<UserProvider>(
+                                context,
+                                listen: false,
+                              ).setUser(
+                                email: emailCtrl.text.trim(),
+                                username: emailCtrl.text.split('@').first,
+                                photoUrl:
+                                    "https://api.dicebear.com/9.x/avataaars/png?seed=${emailCtrl.text}",
+                              );
                             } else {
                               print("Form is invalid!");
                             }

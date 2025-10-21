@@ -76,23 +76,18 @@ class _ReservationsState extends State<Reservations> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6FA),
+      appBar: AppBar(
+        title: const Text('Mes réservations'),
+        backgroundColor: Colors.white,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Mes Réservations",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
               const SizedBox(height: 16),
 
-             
               TextField(
                 decoration: InputDecoration(
                   hintText: "Rechercher par événement, organisateur...",
@@ -156,7 +151,6 @@ class _ReservationsState extends State<Reservations> {
               ),
               const SizedBox(height: 20),
 
-             
               Expanded(
                 child: visibleReservations.isEmpty
                     ? const Center(
