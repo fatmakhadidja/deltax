@@ -1,7 +1,9 @@
 import 'package:deltax/ui/screens/accueil.dart';
 import 'package:deltax/ui/screens/annuaire.dart';
+import 'package:deltax/ui/screens/apropos.dart';
 import 'package:deltax/ui/screens/change_password.dart';
 import 'package:deltax/ui/screens/connexion.dart';
+import 'package:deltax/ui/screens/contact.dart';
 import 'package:deltax/ui/screens/evenements.dart';
 import 'package:deltax/ui/screens/inscription.dart';
 import 'package:deltax/ui/screens/notifications.dart';
@@ -21,6 +23,8 @@ class AppRoutes {
   static const String notifications = '/notifications';
   static const String reservations = '/reservations';
   static const String annuaire = '/annuaire';
+  static const String apropos = '/apropos';
+  static const String contact = '/contact';
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case connexion:
@@ -29,21 +33,24 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const Inscription());
       case profil:
         return MaterialPageRoute(builder: (_) => const Profil());
-      case changePassword :
-        return MaterialPageRoute(builder: (_) => const ChangePassword()); 
-      case evenements :
-        return MaterialPageRoute(builder: (_) => const Evenements());  
+      case changePassword:
+        return MaterialPageRoute(builder: (_) => const ChangePassword());
+      case evenements:
+        return MaterialPageRoute(builder: (_) => const Evenements());
       case splash:
-        return MaterialPageRoute(builder: (_) => const Splash());  
+        return MaterialPageRoute(builder: (_) => const Splash());
       case accueil:
-        return MaterialPageRoute(builder: (_) =>  Accueil()); 
+        return MaterialPageRoute(builder: (_) => Accueil());
       case notifications:
-         return MaterialPageRoute(builder: (_) =>  Notifications()); 
+        return MaterialPageRoute(builder: (_) => Notifications());
       case reservations:
-         return MaterialPageRoute(builder: (_) =>  Reservations());   
-      case annuaire :
-         return MaterialPageRoute(builder: (_) =>  Annuaire());   
-          
+        return MaterialPageRoute(builder: (_) => Reservations());
+      case annuaire:
+        return MaterialPageRoute(builder: (_) => Annuaire());
+      case apropos:
+        return MaterialPageRoute(builder: (_) => Apropos());
+      case contact:
+        return MaterialPageRoute(builder: (_) => Contact());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -63,12 +63,10 @@ class _AccueilState extends State<Accueil> {
                     MyButton(
                       child: "Connexion/inscription",
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ConnexionNavigator(),
-                          ),
-                        );
+                        setState(() {
+                          Accueil._selectedInd = 2;
+                        });
+                        Navigator.pop(context);
                       },
                     ),
                   ],
@@ -110,7 +108,9 @@ class _AccueilState extends State<Accueil> {
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.apropos);
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -132,7 +132,9 @@ class _AccueilState extends State<Accueil> {
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.contact);
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

@@ -173,6 +173,10 @@ class _AnnuaireState extends State<Annuaire> {
 
     return Scaffold(
       backgroundColor: AppColors.lightLightGrey,
+       appBar: AppBar(
+        title: const Text('Annuaire'),
+        backgroundColor: Colors.white,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -193,48 +197,6 @@ class _AnnuaireState extends State<Annuaire> {
                 style: TextStyle(color: Colors.black54),
               ),
               const SizedBox(height: 16),
-
-              // 🔍 Barre de recherche
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Rechercher par nom, description, wilaya...",
-                  prefixIcon: const Icon(Icons.search),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                onChanged: (val) => setState(() => searchQuery = val),
-              ),
-              const SizedBox(height: 12),
-
-              //  Filtre catégorie
-              DropdownButtonFormField<String>(
-                value: selectedCategory,
-                items: categories
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                    .toList(),
-                onChanged: (val) => setState(() => selectedCategory = val!),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
 
               //  Filtre wilaya
               DropdownButtonFormField<String>(
@@ -258,7 +220,7 @@ class _AnnuaireState extends State<Annuaire> {
               ),
               const SizedBox(height: 20),
 
-              // 🧩 Liste des partenaires
+              //  Liste des partenaires
               Expanded(
                 child: visiblePartners.isEmpty
                     ? const Center(
