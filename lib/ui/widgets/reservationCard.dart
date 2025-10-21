@@ -244,9 +244,16 @@ class ReservationCard extends StatelessWidget {
                 const imageUrl = "assets/images/deltax_logo.png";
 
                 try {
-                  // Demande de permission
-                  var status = await Permission.storage.request();
-                  if (!status.isGranted) {
+                  if (await Permission.storage.isDenied) {
+                    await Permission.storage.request();
+                  }
+
+                  if (await Permission.manageExternalStorage.isDenied) {
+                    await Permission.manageExternalStorage.request();
+                  }
+
+                  if (!await Permission.storage.isGranted &&
+                      !await Permission.manageExternalStorage.isGranted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Permission de stockage refusée."),
