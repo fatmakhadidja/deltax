@@ -246,7 +246,7 @@ class _EvenementsState extends State<Evenements> {
     );
   }
 
-  // 🔹 Widget helper pour chaque filtre
+  // Widget helper pour chaque filtre
   Widget _buildFilterDropdown({
     required String label,
     required String value,
@@ -311,7 +311,7 @@ class _EvenementsState extends State<Evenements> {
                 ),
                 const SizedBox(height: 10),
 
-                // 🔹 Bouton carte
+                //  Bouton carte
                 OutlinedButton.icon(
                   onPressed: () => _showMapDialog(context),
                   style: ButtonStyle(
