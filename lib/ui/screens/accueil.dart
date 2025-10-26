@@ -1,5 +1,6 @@
 import 'package:deltax/core/const/colors.dart';
 import 'package:deltax/core/const/text_styles.dart';
+import 'package:deltax/core/providers/navigationProvider.dart';
 import 'package:deltax/core/providers/user_provider.dart';
 import 'package:deltax/routes/routes.dart';
 import 'package:deltax/ui/screens/accueil_page.dart';
@@ -11,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Accueil extends StatefulWidget {
-  static int _selectedInd = 0;
-
   const Accueil({super.key});
 
   @override
@@ -21,7 +20,10 @@ class Accueil extends StatefulWidget {
 
 class _AccueilState extends State<Accueil> {
   void _onItemTapped(int index, String? username) {
+    final navProvider = Provider.of<NavigationProvider>(context, listen: false);
+
     if (index == 3) {
+      // ====== MENU BUTTON ======
       if (username == null) {
         showModalBottomSheet(
           context: context,
@@ -49,10 +51,7 @@ class _AccueilState extends State<Accueil> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(
-                          Icons.close,
-                          color: AppColors.darkGrey,
-                        ),
+                        icon: const Icon(Icons.close, color: AppColors.darkGrey),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ],
@@ -60,28 +59,21 @@ class _AccueilState extends State<Accueil> {
                   const SizedBox(height: 10),
                   Consumer<UserProvider>(
                     builder: (context, user, _) {
-                      if (user.isLoggedIn) {
-                        return Center(
-                          child: MyButton(
-                            child: "Déconnexion",
-                            onPressed: () {
+                      return Center(
+                        child: MyButton(
+                          child: user.isLoggedIn
+                              ? "Déconnexion"
+                              : "Connexion / Inscription",
+                          onPressed: () {
+                            if (user.isLoggedIn) {
                               user.logout();
-                              Navigator.pop(context);
-                              setState(() => Accueil._selectedInd = 0);
-                            },
-                          ),
-                        );
-                      } else {
-                        return Center(
-                          child: MyButton(
-                            child: "Connexion / Inscription",
-                            onPressed: () {
-                              setState(() => Accueil._selectedInd = 2);
-                              Navigator.pop(context);
-                            },
-                          ),
-                        );
-                      }
+                            } else {
+                              navProvider.setIndex(2);
+                            }
+                            Navigator.pop(context);
+                          },
+                        ),
+                      );
                     },
                   ),
                   const SizedBox(height: 20),
@@ -94,18 +86,15 @@ class _AccueilState extends State<Accueil> {
                   ),
                   const SizedBox(height: 10),
                   _menuItem(Icons.badge, "Annuaire", AppRoutes.annuaire),
-                  _menuItem(
-                    Icons.info,
-                    "A propos de DeltaX",
-                    AppRoutes.apropos,
-                  ),
-                  _menuItem(Icons.email, "Contactez nous", AppRoutes.contact),
+                  _menuItem(Icons.info, "À propos de DeltaX", AppRoutes.apropos),
+                  _menuItem(Icons.email, "Contactez-nous", AppRoutes.contact),
                 ],
               ),
             );
           },
         );
       } else {
+        // ====== MENU FOR LOGGED USERS ======
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -139,44 +128,32 @@ class _AccueilState extends State<Accueil> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            username ?? "Utilisateur",
+                            username,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
-                          Text(
-                            username ?? "",
-                            style: const TextStyle(color: Colors.grey),
+                          const Text(
+                            "Utilisateur connecté",
+                            style: TextStyle(color: Colors.grey),
                           ),
                         ],
                       ),
                       const Spacer(),
                       IconButton(
-                        icon: const Icon(
-                          Icons.close,
-                          color: AppColors.darkGrey,
-                        ),
+                        icon: const Icon(Icons.close, color: AppColors.darkGrey),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 20),
 
-                  // Menu items
-                  _menuItem(
-                    Icons.person_outline,
-                    "Mon Profil",
-                    AppRoutes.profil,
-                  ),
-                  _menuItem(
-                    Icons.receipt_long,
-                    "Mes Réservations",
-                    AppRoutes.reservations,
-                  ),
-
+                  _menuItem(Icons.person_outline, "Mon Profil", AppRoutes.profil),
+                  _menuItem(Icons.receipt_long, "Mes Réservations",
+                      AppRoutes.reservations),
                   const SizedBox(height: 20),
+
                   Text(
                     "NAVIGATION",
                     style: AppTextStyles.body1(
@@ -187,21 +164,14 @@ class _AccueilState extends State<Accueil> {
                   ),
                   const SizedBox(height: 10),
                   _menuItem(Icons.badge, "Annuaire", AppRoutes.annuaire),
+                  _menuItem(Icons.info_outline, "À propos de DELTA X",
+                      AppRoutes.apropos),
                   _menuItem(
-                    Icons.info_outline,
-                    "À propos de DELTA X",
-                    AppRoutes.apropos,
-                  ),
-                  _menuItem(
-                    Icons.mail_outline,
-                    "Contactez-nous",
-                    AppRoutes.contact,
-                  ),
+                      Icons.mail_outline, "Contactez-nous", AppRoutes.contact),
 
                   const SizedBox(height: 20),
                   const Divider(thickness: 0.5, color: Colors.grey),
 
-                  // Logout button
                   Center(
                     child: OutlinedButton.icon(
                       icon: const Icon(Icons.logout, color: AppColors.pink),
@@ -217,6 +187,7 @@ class _AccueilState extends State<Accueil> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
+                        context.read<UserProvider>().logout();
                       },
                     ),
                   ),
@@ -228,15 +199,14 @@ class _AccueilState extends State<Accueil> {
         );
       }
     } else {
-      setState(() => Accueil._selectedInd = index);
+      // ✅ Navigation handled by provider
+      navProvider.setIndex(index);
     }
   }
 
   Widget _menuItem(IconData icon, String title, String route) {
     return TextButton(
-      onPressed: () {
-        Navigator.pushNamed(context, route);
-      },
+      onPressed: () => Navigator.pushNamed(context, route),
       child: Row(
         children: [
           Icon(icon, color: AppColors.darkGrey),
@@ -257,16 +227,13 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<UserProvider>();
+    final navProvider = context.watch<NavigationProvider>();
 
-    final List<Widget> pages = (user.email != null)
-        ? const [
-            AccueilPage(),
-            Evenements(),
-            Notifications(),
-          ] // Replace Placeholder with NotifsPage()
+    final List<Widget> pages = user.email != null
+        ? const [AccueilPage(), Evenements(), Notifications()]
         : const [AccueilPage(), Evenements(), ConnexionNavigator()];
 
-    final List<BottomNavigationBarItem> items = (user.email != null)
+    final List<BottomNavigationBarItem> items = user.email != null
         ? const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Accueil"),
             BottomNavigationBarItem(
@@ -293,9 +260,9 @@ class _AccueilState extends State<Accueil> {
           ];
 
     return Scaffold(
-      body: pages[Accueil._selectedInd],
+      body: pages[navProvider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: Accueil._selectedInd,
+        currentIndex: navProvider.currentIndex,
         selectedItemColor: AppColors.pink,
         unselectedItemColor: AppColors.darkGrey,
         showUnselectedLabels: true,
