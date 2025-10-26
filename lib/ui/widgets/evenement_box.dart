@@ -10,7 +10,6 @@ class EvenementBox extends StatelessWidget {
   final String lieu;
   final String categorie;
   final int prix;
-  final bool enVedette;
 
   const EvenementBox({
     super.key,
@@ -21,7 +20,6 @@ class EvenementBox extends StatelessWidget {
     required this.lieu,
     required this.categorie,
     required this.prix,
-    this.enVedette = false,
   });
 
   @override
@@ -66,28 +64,6 @@ class EvenementBox extends StatelessWidget {
                   ),
 
                   //  Badge “À la une”
-                  if (enVedette)
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Text(
-                          'À la une',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
                 ],
               ),
 

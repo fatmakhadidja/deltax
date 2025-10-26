@@ -16,7 +16,7 @@ class Evenements extends StatefulWidget {
 class _EvenementsState extends State<Evenements> {
   final PopupController _popupLayerController = PopupController();
 
-  //  Liste complète des événements
+  // Liste complète des événements
   final List<Map<String, dynamic>> _allEvents = [
     {
       'titre': 'Tandem en parapente',
@@ -72,12 +72,12 @@ class _EvenementsState extends State<Evenements> {
     },
   ];
 
-  //  Valeurs actuelles des filtres
+  // Valeurs actuelles des filtres
   String _selectedCategorie = "Toutes";
   String _selectedPartenaire = "Tous";
   String _selectedWilaya = "Toutes";
 
-  //  Listes d'options
+  // Listes d'options
   final List<String> _categories = [
     "Toutes",
     "Randonnée",
@@ -93,8 +93,8 @@ class _EvenementsState extends State<Evenements> {
   ];
   final List<String> _wilayas = ["Toutes", "Alger", "Boumerdès", "Tizi Ouzou"];
 
-  //  Liste affichée (filtrée après clic sur “Terminé”)
- List<Map<String, dynamic>> _displayedEvents = [];
+  // Liste affichée (filtrée)
+  List<Map<String, dynamic>> _displayedEvents = [];
 
   bool _filtersApplied = false;
 
@@ -117,8 +117,6 @@ class _EvenementsState extends State<Evenements> {
             event['partenaire'] == _selectedPartenaire;
         final matchWilaya =
             _selectedWilaya == "Toutes" || event['wilaya'] == _selectedWilaya;
-
-        //  Si "Non terminé" activé → événements futurs seulement
         final matchDate = !_filtersApplied || event['date'].isAfter(now);
 
         return matchCategorie && matchPartenaire && matchWilaya && matchDate;
@@ -126,15 +124,14 @@ class _EvenementsState extends State<Evenements> {
     });
   }
 
-  //  Clic sur “Non terminé”
   void _applyFilters() {
     setState(() {
-      _filtersApplied = !_filtersApplied; // toggle uniquement ici
+      _filtersApplied = !_filtersApplied;
     });
-    _updateDisplayedEvents(); // mettre à jour la liste avec le nouvel état
+    _updateDisplayedEvents();
   }
 
-  //  Afficher la carte
+  // Afficher la carte
   void _showMapDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -169,7 +166,7 @@ class _EvenementsState extends State<Evenements> {
     );
   }
 
-  //  Carte
+  // Carte 
   Widget _buildMap() {
     final center = LatLng(36.75, 3.06);
     final markers = _displayedEvents.map((event) {
@@ -199,8 +196,23 @@ class _EvenementsState extends State<Evenements> {
             popupDisplayOptions: PopupDisplayOptions(
               builder: (BuildContext context, Marker marker) {
                 final event = _displayedEvents.firstWhere(
-                  (e) => e['location'] == marker.point,
+                  (e) =>
+                      (e['location'].latitude - marker.point.latitude).abs() <
+                          0.0001 &&
+                      (e['location'].longitude - marker.point.longitude).abs() <
+                          0.0001,
+                  orElse: () => {},
                 );
+
+                if (event.isEmpty) {
+                  return const Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Text("Événement non trouvé"),
+                    ),
+                  );
+                }
+
                 return _buildPopupCard(event);
               },
             ),
@@ -210,7 +222,7 @@ class _EvenementsState extends State<Evenements> {
     );
   }
 
-  //  Carte popup
+  // Carte popup
   Widget _buildPopupCard(Map<String, dynamic> event) {
     return Card(
       margin: const EdgeInsets.all(8),
@@ -311,7 +323,7 @@ class _EvenementsState extends State<Evenements> {
                 ),
                 const SizedBox(height: 10),
 
-                //  Bouton carte
+                // Bouton carte
                 OutlinedButton.icon(
                   onPressed: () => _showMapDialog(context),
                   style: ButtonStyle(
@@ -331,7 +343,7 @@ class _EvenementsState extends State<Evenements> {
                   ),
                 ),
 
-                //  Filtres
+                // Filtres
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
@@ -341,36 +353,40 @@ class _EvenementsState extends State<Evenements> {
                     spacing: 10,
                     runSpacing: 10,
                     crossAxisAlignment: WrapCrossAlignment.end,
-
                     children: [
                       _buildFilterDropdown(
                         label: "Catégorie",
                         value: _selectedCategorie,
                         items: _categories,
-                        onChanged: (value) => setState(() {
-                          _selectedCategorie = value!;
-                          _updateDisplayedEvents(); // filtre sans changer _filtersApplied
-                        }),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedCategorie = value!;
+                            _updateDisplayedEvents();
+                          });
+                        },
                       ),
                       _buildFilterDropdown(
                         label: "Partenaire",
                         value: _selectedPartenaire,
                         items: _partenaires,
-                        onChanged: (value) => setState(() {
-                          _selectedPartenaire = value!;
-                          _updateDisplayedEvents();
-                        }),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedPartenaire = value!;
+                            _updateDisplayedEvents();
+                          });
+                        },
                       ),
                       _buildFilterDropdown(
                         label: "Wilaya",
                         value: _selectedWilaya,
                         items: _wilayas,
-                        onChanged: (value) => setState(() {
-                          _selectedWilaya = value!;
-                          _updateDisplayedEvents();
-                        }),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedWilaya = value!;
+                            _updateDisplayedEvents();
+                          });
+                        },
                       ),
-
                       OutlinedButton(
                         onPressed: _applyFilters,
                         style: OutlinedButton.styleFrom(
@@ -400,7 +416,7 @@ class _EvenementsState extends State<Evenements> {
 
                 const SizedBox(height: 10),
 
-                //  Liste filtrée
+                // Liste filtrée
                 if (_displayedEvents.isEmpty)
                   const Padding(
                     padding: EdgeInsets.all(20),
@@ -416,7 +432,7 @@ class _EvenementsState extends State<Evenements> {
                       lieu: event['lieu'],
                       categorie: event['categorie'],
                       prix: event['prix'],
-                      enVedette: event['enVedette'],
+                     
                     ),
                   ),
               ],
