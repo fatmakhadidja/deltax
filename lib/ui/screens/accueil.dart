@@ -51,7 +51,10 @@ class _AccueilState extends State<Accueil> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.close, color: AppColors.darkGrey),
+                        icon: const Icon(
+                          Icons.close,
+                          color: AppColors.darkGrey,
+                        ),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ],
@@ -86,7 +89,11 @@ class _AccueilState extends State<Accueil> {
                   ),
                   const SizedBox(height: 10),
                   _menuItem(Icons.badge, "Annuaire", AppRoutes.annuaire),
-                  _menuItem(Icons.info, "À propos de DeltaX", AppRoutes.apropos),
+                  _menuItem(
+                    Icons.info,
+                    "À propos de DeltaX",
+                    AppRoutes.apropos,
+                  ),
                   _menuItem(Icons.email, "Contactez-nous", AppRoutes.contact),
                 ],
               ),
@@ -142,16 +149,26 @@ class _AccueilState extends State<Accueil> {
                       ),
                       const Spacer(),
                       IconButton(
-                        icon: const Icon(Icons.close, color: AppColors.darkGrey),
+                        icon: const Icon(
+                          Icons.close,
+                          color: AppColors.darkGrey,
+                        ),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
 
-                  _menuItem(Icons.person_outline, "Mon Profil", AppRoutes.profil),
-                  _menuItem(Icons.receipt_long, "Mes Réservations",
-                      AppRoutes.reservations),
+                  _menuItem(
+                    Icons.person_outline,
+                    "Mon Profil",
+                    AppRoutes.profil,
+                  ),
+                  _menuItem(
+                    Icons.receipt_long,
+                    "Mes Réservations",
+                    AppRoutes.reservations,
+                  ),
                   const SizedBox(height: 20),
 
                   Text(
@@ -164,10 +181,16 @@ class _AccueilState extends State<Accueil> {
                   ),
                   const SizedBox(height: 10),
                   _menuItem(Icons.badge, "Annuaire", AppRoutes.annuaire),
-                  _menuItem(Icons.info_outline, "À propos de DELTA X",
-                      AppRoutes.apropos),
                   _menuItem(
-                      Icons.mail_outline, "Contactez-nous", AppRoutes.contact),
+                    Icons.info_outline,
+                    "À propos de DELTA X",
+                    AppRoutes.apropos,
+                  ),
+                  _menuItem(
+                    Icons.mail_outline,
+                    "Contactez-nous",
+                    AppRoutes.contact,
+                  ),
 
                   const SizedBox(height: 20),
                   const Divider(thickness: 0.5, color: Colors.grey),
@@ -242,7 +265,7 @@ class _AccueilState extends State<Accueil> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
-              label: "Notifs",
+              label: "Notifications",
             ),
             BottomNavigationBarItem(icon: Icon(Icons.menu), label: "Menu"),
           ]
@@ -262,6 +285,7 @@ class _AccueilState extends State<Accueil> {
     return Scaffold(
       body: pages[navProvider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: navProvider.currentIndex,
         selectedItemColor: AppColors.pink,
         unselectedItemColor: AppColors.darkGrey,

@@ -43,7 +43,10 @@ class _ContactState extends State<Contact> {
   @override
   Widget build(BuildContext context) {
     // Coordinates (example from your screenshot)
-    const LatLng deltaXLocation = LatLng(36.7525, 3.0420); // Boumerdès/Alger area
+    const LatLng deltaXLocation = LatLng(
+      36.7525,
+      3.0420,
+    ); // Boumerdès/Alger area
 
     return Scaffold(
       backgroundColor: AppColors.lightLightGrey,
@@ -77,6 +80,7 @@ class _ContactState extends State<Contact> {
 
             // --- Contact Info Card ---
             Card(
+              color: Colors.white,
               elevation: 2,
               margin: const EdgeInsets.only(bottom: 24),
               child: Padding(
@@ -119,7 +123,8 @@ class _ContactState extends State<Contact> {
                   ),
                   children: [
                     TileLayer(
-                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: 'com.deltax.app',
                     ),
                     MarkerLayer(
@@ -190,8 +195,10 @@ class _ContactState extends State<Contact> {
                         borderSide: BorderSide(color: AppColors.darkGrey),
                       ),
                       focusedBorder: const OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: AppColors.orange, width: 1.7),
+                        borderSide: BorderSide(
+                          color: AppColors.orange,
+                          width: 1.7,
+                        ),
                       ),
                     ),
                     validator: (value) => (value == null || value.isEmpty)

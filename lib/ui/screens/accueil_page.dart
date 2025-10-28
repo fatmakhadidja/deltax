@@ -17,34 +17,67 @@ class AccueilPage extends StatefulWidget {
 class _AccueilPageState extends State<AccueilPage> {
   int _currentIndex = 0;
 
-  final List<Map<String, String>> _activities = [
-    {
-      'image': 'assets/images/ski.jpg',
-      'title': 'Ski',
-      'description':
-          "Vivez l’hiver autrement avec DeltaX ! Entre descentes vertigineuses et paysages enneigés, nos aventures hivernales vous offrent une expérience unique, encadrée par des professionnels et riche en sensations fortes.",
-    },
-    {
-      'image': 'assets/images/diving.jpg',
-      'title': 'Plongée sous-marine',
-      'description':
-          "Avec DeltaX, explorez un monde sous-marin caché. Encadré par des professionnels, partez à la découverte de récifs colorés et d’une faune fascinante — accessible à tous, débutants comme passionnés.",
-    },
-    {
-      'image': 'assets/images/randonnee.jpg',
-      'title': 'Randonnée',
-      'description':
-          "Découvrez la beauté naturelle de l’Algérie à travers nos randonnées organisées, entre montagnes, forêts et villages authentiques.",
-    },
-    {
-      'image': 'assets/images/safari.jpg',
-      'title': 'Safari',
-      'description':
-          "Partez à la découverte des grands espaces algériens avec nos safaris en 4x4. Entre dunes dorées, paysages sahariens et bivouacs sous les étoiles, vivez une aventure authentique et inoubliable.",
-    },
-  ];
+  List<Image> images = [];
+  List<Map<String, dynamic>> _activities = [];
 
-  /// 🔹 Exemple d’événements (tu pourras ensuite les charger depuis un provider)
+  initState() {
+    super.initState();
+    images = [
+      Image.asset(
+        'assets/images/ski.jpg',
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.4,
+      ),
+      Image.asset(
+        'assets/images/diving.jpg',
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.4,
+      ),
+      Image.asset(
+        'assets/images/randonnee.jpg',
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.4,
+      ),
+      Image.asset(
+        'assets/images/safari.jpg',
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.4,
+      ),
+    ];
+
+    _activities = [
+      {
+        'image': images[0],
+        'title': 'Ski',
+        'description':
+            "Vivez l’hiver autrement avec DeltaX ! Entre descentes vertigineuses et paysages enneigés, nos aventures hivernales vous offrent une expérience unique, encadrée par des professionnels et riche en sensations fortes.",
+      },
+      {
+        'image': images[1],
+        'title': 'Plongée sous-marine',
+        'description':
+            "Avec DeltaX, explorez un monde sous-marin caché. Encadré par des professionnels, partez à la découverte de récifs colorés et d’une faune fascinante — accessible à tous, débutants comme passionnés.",
+      },
+      {
+        'image': images[2],
+        'title': 'Randonnée',
+        'description':
+            "Découvrez la beauté naturelle de l’Algérie à travers nos randonnées organisées, entre montagnes, forêts et villages authentiques.",
+      },
+      {
+        'image': images[3],
+        'title': 'Safari',
+        'description':
+            "Partez à la découverte des grands espaces algériens avec nos safaris en 4x4. Entre dunes dorées, paysages sahariens et bivouacs sous les étoiles, vivez une aventure authentique et inoubliable.",
+      },
+    ];
+  }
+
+  ///  Exemple d’événements (tu pourras ensuite les charger depuis un provider)
   final List<Map<String, dynamic>> _allEvents = [
     {
       'image': 'assets/images/diving.jpg',
@@ -107,15 +140,7 @@ class _AccueilPageState extends State<AccueilPage> {
                   builder: (context) => Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          activity['image']!,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height * 0.4,
-                        ),
-                      ),
+                      ClipRRect(child: activity['image']),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.4,
                         decoration: BoxDecoration(
@@ -195,7 +220,6 @@ class _AccueilPageState extends State<AccueilPage> {
                           lieu: event['lieu'],
                           categorie: event['categorie'],
                           prix: event['prix'],
-                          
                         );
                       }).toList(),
                     ),
