@@ -1,13 +1,14 @@
+import 'dart:io';
 import 'package:deltax/core/const/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 
 class Reservation {
   final String title;
-  final String status;
+  String status; //  plus "final" pour pouvoir être modifié
   final DateTime date;
   final String location;
   final int places;
@@ -25,12 +26,14 @@ class ReservationCard extends StatelessWidget {
   final Reservation reservation;
   final VoidCallback? onDetailsPressed;
   final VoidCallback? onPaymentProofPressed;
+  final void Function(String newStatus)? onStatusChanged; //  callback ajouté
 
   const ReservationCard({
     super.key,
     required this.reservation,
     this.onDetailsPressed,
     this.onPaymentProofPressed,
+    this.onStatusChanged,
   });
 
   String _monthName(int month) {
@@ -65,9 +68,17 @@ class ReservationCard extends StatelessWidget {
         return {
           "color": Colors.orange[100],
           "textColor": Colors.orange[700],
-          "buttonText": "Confirmer Paiment",
+          "buttonText": "Confirmer Paiement",
           "buttonColor": Colors.cyan,
           "buttonEnabled": true,
+        };
+      case "paiement envoyé":
+        return {
+          "color": Colors.grey[300],
+          "textColor": const Color.fromARGB(255, 97, 97, 97),
+          "buttonText": "Paiement envoyé",
+          "buttonColor": Colors.grey[400],
+          "buttonEnabled": false,
         };
       case "annulée":
         return {
@@ -77,15 +88,7 @@ class ReservationCard extends StatelessWidget {
           "buttonColor": Colors.grey[400],
           "buttonEnabled": false,
         };
-      case "Paiement envoyé":
-        return {
-          "color": Colors.grey[300],
-          "textColor": const Color.fromARGB(255, 97, 97, 97),
-          "buttonText": "Réservation annulée",
-          "buttonColor": Colors.grey[400],
-          "buttonEnabled": false,
-        };
-      case "Terminée":
+      case "terminée":
         return {
           "color": Colors.grey[200],
           "textColor": Colors.grey[600],
@@ -120,7 +123,6 @@ class ReservationCard extends StatelessWidget {
                 "Confirmation de Paiement",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,14 +140,11 @@ class ReservationCard extends StatelessWidget {
                     style: const TextStyle(color: Colors.black54),
                   ),
                   const SizedBox(height: 20),
-
                   const Text(
                     "Preuve de paiement",
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
-
-                  // Choisir un fichier
                   OutlinedButton.icon(
                     onPressed: () async {
                       final result = await FilePicker.platform.pickFiles(
@@ -177,6 +176,12 @@ class ReservationCard extends StatelessWidget {
                       ? null
                       : () {
                           Navigator.of(context).pop();
+
+                          //  Mise à jour du statut
+                          if (onStatusChanged != null) {
+                            onStatusChanged!("Paiement envoyé");
+                          }
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Preuve de paiement envoyée !"),
@@ -222,7 +227,6 @@ class ReservationCard extends StatelessWidget {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Exemple d'image (remplace par ton image réelle)
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
@@ -241,8 +245,6 @@ class ReservationCard extends StatelessWidget {
           actions: [
             TextButton.icon(
               onPressed: () async {
-                const imageUrl = "assets/images/deltax_logo.png";
-
                 try {
                   if (await Permission.storage.isDenied) {
                     await Permission.storage.request();
@@ -262,22 +264,24 @@ class ReservationCard extends StatelessWidget {
                     return;
                   }
 
+                  final byteData = await rootBundle.load(
+                    'assets/images/deltax_logo.png',
+                  );
+
                   final directory = await getDownloadsDirectory();
                   final savePath =
                       "${directory!.path}/preuve_paiement_${DateTime.now().millisecondsSinceEpoch}.png";
 
-                  final dio = Dio();
-                  await dio.download(imageUrl, savePath);
+                  final file = File(savePath);
+                  await file.writeAsBytes(byteData.buffer.asUint8List());
 
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("Image téléchargée dans : $savePath"),
-                    ),
+                    SnackBar(content: Text(" Image enregistrée : $savePath")),
                   );
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text("Erreur lors du téléchargement : $e"),
+                      content: Text("Erreur lors de l'enregistrement : $e"),
                     ),
                   );
                 }
@@ -338,10 +342,7 @@ class ReservationCard extends StatelessWidget {
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: style["color"],
                   borderRadius: BorderRadius.circular(20),
@@ -357,7 +358,6 @@ class ReservationCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-
           Row(
             children: [
               const Icon(Icons.calendar_today, size: 18, color: Colors.black54),
@@ -369,33 +369,24 @@ class ReservationCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-
           Row(
             children: [
-              const Icon(
-                Icons.location_on_outlined,
-                size: 18,
-                color: Colors.black54,
-              ),
+              const Icon(Icons.location_on_outlined,
+                  size: 18, color: Colors.black54),
               const SizedBox(width: 6),
               Text(r.location, style: const TextStyle(color: Colors.black87)),
             ],
           ),
           const SizedBox(height: 6),
-
           Row(
             children: [
-              const Icon(
-                Icons.people_alt_outlined,
-                size: 18,
-                color: Colors.black54,
-              ),
+              const Icon(Icons.people_alt_outlined,
+                  size: 18, color: Colors.black54),
               const SizedBox(width: 6),
               Text("${r.places} place(s)"),
             ],
           ),
           const SizedBox(height: 12),
-
           Row(
             children: [
               OutlinedButton(
@@ -407,15 +398,14 @@ class ReservationCard extends StatelessWidget {
                 ),
                 child: const Text("Détails"),
               ),
-
               const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: style["buttonText"] == "Confirmer Paiment"
+                  onPressed: style["buttonText"] == "Confirmer Paiement"
                       ? () => _showPaymentDialog(context, reservation)
                       : style["buttonText"] == "Preuve de paiement"
-                      ? () => _showPaymentProofDialog(context)
-                      : null,
+                          ? () => _showPaymentProofDialog(context)
+                          : null,
                   icon: const Icon(Icons.receipt_long, color: Colors.white),
                   label: Text(style["buttonText"]),
                   style: ElevatedButton.styleFrom(

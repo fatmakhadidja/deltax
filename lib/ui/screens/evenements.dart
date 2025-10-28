@@ -92,7 +92,7 @@ class _EvenementsState extends State<Evenements> {
     "SkyTeam",
   ];
   final List<String> _wilayas = [
-    "Toutes les wilayas",
+    "Toutes",
     "01 - Adrar",
     "02 - Chlef",
     "03 - Laghouat",
@@ -176,8 +176,8 @@ class _EvenementsState extends State<Evenements> {
             _selectedPartenaire == "Tous" ||
             event['partenaire'] == _selectedPartenaire;
         final matchesWilaya =
-          (_selectedWilaya == "Toutes les wilayas") ||
-          event['wilaya'] == _selectedWilaya.split(' - ').last.trim();
+            (_selectedWilaya == "Toutes les wilayas") ||
+            event['wilaya'] == _selectedWilaya.split(' - ').last.trim();
         final matchDate = !_filtersApplied || event['date'].isAfter(now);
 
         return matchCategorie && matchPartenaire && matchesWilaya && matchDate;
@@ -338,6 +338,8 @@ class _EvenementsState extends State<Evenements> {
           const SizedBox(height: 5),
           DropdownButtonFormField<String>(
             value: value,
+            isExpanded: true,
+            menuMaxHeight: MediaQuery.of(context).size.height * 0.6,
             items: items
                 .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                 .toList(),

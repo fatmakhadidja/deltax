@@ -166,7 +166,12 @@ class _ReservationsState extends State<Reservations> {
                           return ReservationCard(
                             reservation: r,
                             onDetailsPressed: () {},
-                            onPaymentProofPressed: () {},
+
+                            onStatusChanged: (newStatus) {
+                              setState(() {
+                                r.status = newStatus;
+                              });
+                            },
                           );
                         },
                       ),

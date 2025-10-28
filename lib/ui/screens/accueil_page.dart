@@ -19,9 +19,14 @@ class _AccueilPageState extends State<AccueilPage> {
 
   List<Image> images = [];
   List<Map<String, dynamic>> _activities = [];
+  bool _isInitialized = false;
 
-  initState() {
-    super.initState();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_isInitialized) return;
+
     images = [
       Image.asset(
         'assets/images/ski.jpg',
@@ -49,32 +54,37 @@ class _AccueilPageState extends State<AccueilPage> {
       ),
     ];
 
+    for (var img in images) {
+      precacheImage(img.image, context);
+    }
+
     _activities = [
       {
         'image': images[0],
         'title': 'Ski',
         'description':
-            "Vivez l’hiver autrement avec DeltaX ! Entre descentes vertigineuses et paysages enneigés, nos aventures hivernales vous offrent une expérience unique, encadrée par des professionnels et riche en sensations fortes.",
+            "Vivez l’hiver autrement avec DeltaX ! Entre descentes vertigineuses et paysages enneigés...",
       },
       {
         'image': images[1],
         'title': 'Plongée sous-marine',
-        'description':
-            "Avec DeltaX, explorez un monde sous-marin caché. Encadré par des professionnels, partez à la découverte de récifs colorés et d’une faune fascinante — accessible à tous, débutants comme passionnés.",
+        'description': "Avec DeltaX, explorez un monde sous-marin caché...",
       },
       {
         'image': images[2],
         'title': 'Randonnée',
         'description':
-            "Découvrez la beauté naturelle de l’Algérie à travers nos randonnées organisées, entre montagnes, forêts et villages authentiques.",
+            "Découvrez la beauté naturelle de l’Algérie à travers nos randonnées organisées...",
       },
       {
         'image': images[3],
         'title': 'Safari',
         'description':
-            "Partez à la découverte des grands espaces algériens avec nos safaris en 4x4. Entre dunes dorées, paysages sahariens et bivouacs sous les étoiles, vivez une aventure authentique et inoubliable.",
+            "Partez à la découverte des grands espaces algériens avec nos safaris en 4x4...",
       },
     ];
+
+    _isInitialized = true;
   }
 
   ///  Exemple d’événements (tu pourras ensuite les charger depuis un provider)

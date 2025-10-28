@@ -201,6 +201,8 @@ class _AnnuaireState extends State<Annuaire> {
               //  Filtre wilaya
               DropdownButtonFormField<String>(
                 value: selectedWilaya,
+                menuMaxHeight: MediaQuery.of(context).size.height * 0.6,
+                isExpanded: true,
                 items: wilayas
                     .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                     .toList(),

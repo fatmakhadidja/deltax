@@ -222,7 +222,7 @@ class _AccueilState extends State<Accueil> {
         );
       }
     } else {
-      // ✅ Navigation handled by provider
+    
       navProvider.setIndex(index);
     }
   }
