@@ -176,7 +176,7 @@ class _EvenementsState extends State<Evenements> {
             _selectedPartenaire == "Tous" ||
             event['partenaire'] == _selectedPartenaire;
         final matchesWilaya =
-            (_selectedWilaya == "Toutes les wilayas") ||
+            (_selectedWilaya == "Toutes") ||
             event['wilaya'] == _selectedWilaya.split(' - ').last.trim();
         final matchDate = !_filtersApplied || event['date'].isAfter(now);
 
@@ -425,6 +425,7 @@ class _EvenementsState extends State<Evenements> {
                           setState(() {
                             _selectedCategorie = value!;
                             _updateDisplayedEvents();
+                           
                           });
                         },
                       ),
