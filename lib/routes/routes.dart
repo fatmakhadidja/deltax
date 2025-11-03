@@ -10,6 +10,7 @@ import 'package:deltax/ui/screens/notifications.dart';
 import 'package:deltax/ui/screens/profil.dart';
 import 'package:deltax/ui/screens/reservations.dart';
 import 'package:deltax/ui/screens/splash.dart';
+import 'package:deltax/ui/screens/evenement_details.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes {
@@ -26,6 +27,8 @@ class AppRoutes {
   static const String annuaire = '/annuaire';
   static const String apropos = '/apropos';
   static const String contact = '/contact';
+  static const String evenementDetails = '/evenementDetails';
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case root : 

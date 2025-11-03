@@ -1,6 +1,9 @@
-import 'package:deltax/core/const/colors.dart';
+import 'package:deltax/ui/screens/evenement_details.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
+
+import '../../core/const/colors.dart';
 
 class EvenementBox extends StatelessWidget {
   final String imageUrl;
@@ -10,6 +13,9 @@ class EvenementBox extends StatelessWidget {
   final String lieu;
   final String categorie;
   final int prix;
+  final String partenaire;
+  final String partenaireDescription;
+  final LatLng location;
 
   const EvenementBox({
     super.key,
@@ -20,14 +26,15 @@ class EvenementBox extends StatelessWidget {
     required this.lieu,
     required this.categorie,
     required this.prix,
+    required this.partenaire,
+    required this.partenaireDescription,
+    required this.location
   });
 
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('d MMMM yyyy', 'fr_FR');
     final heureFormat = DateFormat('HH:mm', 'fr_FR');
-
-    // Vérifie si l’événement est passé
     final bool isPast = date.isBefore(DateTime.now());
 
     return Container(
@@ -48,183 +55,81 @@ class EvenementBox extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //  Image + superpositions
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(12),
-                    ),
-                    child: Image.asset(
-                      imageUrl,
-                      height: 160,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-
-                  //  Badge “À la une”
-                ],
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                child: Image.asset(
+                  imageUrl,
+                  height: 160,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
-
-              const SizedBox(height: 10),
-
-              //  Contenu principal
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
+                padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Titre et catégorie
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            titre,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade100,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            categorie,
-                            style: const TextStyle(
-                              color: Colors.blue,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Date & Heure
+                    Text(titre,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.calendar_today,
-                          size: 16,
-                          color: AppColors.pink,
-                        ),
+                        const Icon(Icons.calendar_today, size: 16, color: AppColors.pink),
                         const SizedBox(width: 6),
-                        Text(
-                          dateFormat.format(date),
-                          style: const TextStyle(
-                            color: AppColors.darkGrey,
-                            fontSize: 13,
-                          ),
-                        ),
+                        Text(dateFormat.format(date)),
                         const SizedBox(width: 10),
-                        const Icon(
-                          Icons.access_time,
-                          size: 16,
-                          color: AppColors.pink,
-                        ),
+                        const Icon(Icons.access_time, size: 16, color: AppColors.pink),
                         const SizedBox(width: 4),
-                        Text(
-                          heureFormat.format(date),
-                          style: const TextStyle(
-                            color: AppColors.darkGrey,
-                            fontSize: 13,
-                          ),
-                        ),
+                        Text(heureFormat.format(date)),
                       ],
                     ),
-
-                    const SizedBox(height: 4),
-
-                    // Durée
+                    const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.timelapse,
-                          size: 16,
-                          color: AppColors.pink,
-                        ),
+                        const Icon(Icons.timelapse, size: 16, color: AppColors.pink),
                         const SizedBox(width: 6),
                         Text(
-                          '${duree.inHours}h${(duree.inMinutes % 60).toString().padLeft(2, '0')}min',
-                          style: const TextStyle(
-                            color: AppColors.darkGrey,
-                            fontSize: 13,
-                          ),
-                        ),
+                            '${duree.inHours}h${(duree.inMinutes % 60).toString().padLeft(2, '0')}min'),
                       ],
                     ),
-
-                    const SizedBox(height: 4),
-
-                    // Lieu
+                    const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.location_on,
-                          size: 16,
-                          color: AppColors.pink,
-                        ),
+                        const Icon(Icons.location_on, size: 16, color: AppColors.pink),
                         const SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                            lieu,
-                            style: const TextStyle(
-                              color: AppColors.darkGrey,
-                              fontSize: 13,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
+                        Expanded(child: Text(lieu)),
                       ],
                     ),
-
                     const SizedBox(height: 10),
-
-                    // Prix
-                    Text(
-                      '$prix DZD',
-                      style: const TextStyle(
-                        color: AppColors.pink,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
+                    Text('$prix DZD',
+                        style: const TextStyle(
+                            color: AppColors.pink,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold)),
                     const SizedBox(height: 10),
-
-                    // Bouton Détails
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: AppColors.darkGrey,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 8,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          'Détails',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EvenementDetails(
+                                location: location,
+                                imageUrl: imageUrl,
+                                titre: titre,
+                                date: date,
+                                duree: duree,
+                                lieu: lieu,
+                                prix: prix,
+                                partenaire: partenaire,
+                                partenaireDescription: partenaireDescription,
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Text('Détails'),
                       ),
                     ),
                   ],
@@ -232,60 +137,22 @@ class EvenementBox extends StatelessWidget {
               ),
             ],
           ),
-          //  Ruban "Terminé"
           if (isPast)
             Positioned.fill(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(color: Colors.black.withOpacity(0.5)),
-              ),
+              child: Container(color: Colors.black.withOpacity(0.4)),
             ),
           if (isPast)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CustomPaint(
-                  painter: _RibbonPainter(color: Colors.redAccent),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 6,
-                    ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Terminé',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            const Positioned(
+              top: 8,
+              left: 8,
+              child: Chip(
+                label: Text('Terminé',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                backgroundColor: Colors.redAccent,
+              ),
             ),
         ],
       ),
     );
   }
-}
-
-/// Peint un ruban triangulaire à gauche
-class _RibbonPainter extends CustomPainter {
-  final Color color;
-
-  _RibbonPainter({required this.color});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color;
-    final path = Path()
-      ..lineTo(size.width, 0)
-      ..lineTo(size.width - 20, size.height)
-      ..lineTo(0, size.height)
-      ..close();
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(_RibbonPainter oldDelegate) => false;
 }

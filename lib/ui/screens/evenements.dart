@@ -1,10 +1,13 @@
 import 'package:deltax/core/const/colors.dart';
 import 'package:deltax/core/const/text_styles.dart';
+import 'package:deltax/core/providers/navigationProvider.dart';
+import 'package:deltax/ui/screens/evenement_details.dart';
 import 'package:deltax/ui/widgets/evenement_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
 
 class Evenements extends StatefulWidget {
   const Evenements({super.key});
@@ -60,7 +63,7 @@ class _EvenementsState extends State<Evenements> {
     {
       'titre': 'Kayak à Cap Djinet',
       'image': 'assets/images/diving.jpg',
-      'date': DateTime(2025, 10, 22, 8, 0, 0),
+      'date': DateTime(2025, 12, 22, 8, 0, 0),
       'duree': const Duration(hours: 5),
       'lieu': 'Cap Djinet, Boumerdès',
       'categorie': 'Kayak',
@@ -274,7 +277,7 @@ class _EvenementsState extends State<Evenements> {
                   );
                 }
 
-                return _buildPopupCard(event);
+                return _buildPopupCard(event, context);
               },
             ),
           ),
@@ -284,7 +287,8 @@ class _EvenementsState extends State<Evenements> {
   }
 
   // Carte popup
-  Widget _buildPopupCard(Map<String, dynamic> event) {
+  Widget _buildPopupCard(Map<String, dynamic> event, BuildContext context) {
+
     return Card(
       margin: const EdgeInsets.all(8),
       elevation: 5,
@@ -295,10 +299,35 @@ class _EvenementsState extends State<Evenements> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              event['titre'],
-              style: const TextStyle(fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+            GestureDetector(
+              onTap: () {
+                context.read<NavigationProvider>().setIndex(1);
+              },
+              child: GestureDetector(
+                onTap:(){
+Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EvenementDetails(
+                                location: event['location'],
+                                imageUrl: event['image'],
+                                titre: event['titre'],
+                                date: event['date'],
+                                duree: event['duree'],
+                                lieu: event['lieu'],
+                                prix: event['prix'],
+                                partenaire: event['partenaire'],
+                                partenaireDescription: 'description',
+                              ),
+                            ),
+                          );
+                },
+                child: Text(
+                  event['titre'],
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
             const SizedBox(height: 4),
             Text(
@@ -425,7 +454,6 @@ class _EvenementsState extends State<Evenements> {
                           setState(() {
                             _selectedCategorie = value!;
                             _updateDisplayedEvents();
-                           
                           });
                         },
                       ),
@@ -489,6 +517,7 @@ class _EvenementsState extends State<Evenements> {
                 else
                   ..._displayedEvents.map(
                     (event) => EvenementBox(
+                      location : event['location'],
                       imageUrl: event['image'],
                       titre: event['titre'],
                       date: event['date'],
@@ -496,6 +525,9 @@ class _EvenementsState extends State<Evenements> {
                       lieu: event['lieu'],
                       categorie: event['categorie'],
                       prix: event['prix'],
+                      partenaire: event['partenaire'],
+                      partenaireDescription:
+                          'Organisé par ${event['partenaire']}, profitez de cette expérience unique à ${event['lieu']}.',
                     ),
                   ),
               ],

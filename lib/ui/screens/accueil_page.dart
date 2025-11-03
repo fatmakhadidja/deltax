@@ -4,6 +4,7 @@ import 'package:deltax/core/const/text_styles.dart';
 import 'package:deltax/core/providers/navigationProvider.dart';
 import 'package:deltax/ui/widgets/evenement_box.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 class AccueilPage extends StatefulWidget {
@@ -72,37 +73,61 @@ class _AccueilPageState extends State<AccueilPage> {
 
   // Exemple d’événements (tu pourras ensuite les charger depuis un provider)
   final List<Map<String, dynamic>> _allEvents = [
-    {
+   {
+      'titre': 'Tandem en parapente',
       'image': 'assets/images/diving.jpg',
-      'titre': 'Randonnée à Tikjda',
-      'date': DateTime(2025, 11, 10, 8, 30),
-      'duree': const Duration(hours: 6, minutes: 30),
-      'lieu': 'Bouira',
-      'categorie': 'Nature',
-      'prix': 2500,
+      'date': DateTime(2025, 10, 10, 8, 0, 0),
+      'duree': const Duration(hours: 8),
+      'lieu': 'Plage Kadous, Aïn Taya, Alger',
+      'categorie': 'Parapente',
+      'partenaire': 'SkyTeam',
+      'wilaya': 'Alger',
+      'prix': 6000,
       'enVedette': true,
+      'location': const LatLng(36.7934, 3.2863),
     },
     {
+      'titre': 'Plongée sous-marine',
       'image': 'assets/images/diving.jpg',
-      'titre': 'Plongée à Béjaïa',
-      'date': DateTime(2025, 10, 15, 9, 0),
-      'duree': const Duration(hours: 4),
-      'lieu': 'Béjaïa',
-      'categorie': 'Mer',
-      'prix': 4000,
-      'enVedette': false,
+      'date': DateTime(2025, 10, 14, 9, 0, 0),
+      'duree': const Duration(hours: 6),
+      'lieu': 'Plage de Zéralda, Alger',
+      'categorie': 'Plongée',
+      'partenaire': 'AquaLife',
+      'wilaya': 'Alger',
+      'prix': 8500,
+      'enVedette': true,
+      'location': const LatLng(36.7509, 3.0420),
     },
     {
+      'titre': 'Randonnée dans le Djurdjura',
       'image': 'assets/images/diving.jpg',
-      'titre': 'Ski à Chréa',
-      'date': DateTime(2025, 12, 20, 7, 0),
-      'duree': const Duration(hours: 5),
-      'lieu': 'Blida',
-      'categorie': 'Montagne',
+      'date': DateTime(2025, 10, 18, 7, 0, 0),
+      'duree': const Duration(hours: 10),
+      'lieu': 'Mont Djurdjura, Kabylie',
+      'categorie': 'Randonnée',
+      'partenaire': 'Club Aventure',
+      'wilaya': 'Tizi Ouzou',
       'prix': 5000,
-      'enVedette': true,
+      'enVedette': false,
+      'location': const LatLng(36.4800, 4.0667),
     },
-  ];
+    {
+      'titre': 'Kayak à Cap Djinet',
+      'image': 'assets/images/diving.jpg',
+      'date': DateTime(2025, 10, 22, 8, 0, 0),
+      'duree': const Duration(hours: 5),
+      'lieu': 'Cap Djinet, Boumerdès',
+      'categorie': 'Kayak',
+      'partenaire': 'AquaLife',
+      'wilaya': 'Boumerdès',
+      'prix': 7000,
+      'enVedette': false,
+      'location': const LatLng(36.8700, 3.7400),
+    },
+];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -215,14 +240,18 @@ class _AccueilPageState extends State<AccueilPage> {
                     Column(
                       children: upcomingEvents.map((event) {
                         return EvenementBox(
-                          imageUrl: event['image'],
-                          titre: event['titre'],
-                          date: event['date'],
-                          duree: event['duree'],
-                          lieu: event['lieu'],
-                          categorie: event['categorie'],
-                          prix: event['prix'],
-                        );
+                          location : event['location'],
+                      imageUrl: event['image'],
+                      titre: event['titre'],
+                      date: event['date'],
+                      duree: event['duree'],
+                      lieu: event['lieu'],
+                      categorie: event['categorie'],
+                      prix: event['prix'],
+                      partenaire: event['partenaire'],
+                      partenaireDescription:
+                          'Organisé par ${event['partenaire']}, profitez de cette expérience unique à ${event['lieu']}.',
+                    );
                       }).toList(),
                     ),
 

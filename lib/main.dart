@@ -4,6 +4,7 @@ import 'package:deltax/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,11 +44,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.root,
-      onGenerateRoute: AppRoutes.generateRoute,
-      locale: const Locale('fr', 'FR'),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => NavigationProvider())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRoutes.root,
+        onGenerateRoute: AppRoutes.generateRoute,
+        locale: const Locale('fr', 'FR'),
+      ),
     );
   }
 }
