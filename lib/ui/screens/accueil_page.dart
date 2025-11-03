@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:deltax/core/const/colors.dart';
 import 'package:deltax/core/const/text_styles.dart';
 import 'package:deltax/core/providers/navigationProvider.dart';
-
 import 'package:deltax/ui/widgets/evenement_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,78 +15,62 @@ class AccueilPage extends StatefulWidget {
 
 class _AccueilPageState extends State<AccueilPage> {
   int _currentIndex = 0;
-
-  List<Image> images = [];
   List<Map<String, dynamic>> _activities = [];
   bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final imagePaths = [
+        'assets/images/ski.jpg',
+        'assets/images/diving.jpg',
+        'assets/images/randonnee.jpg',
+        'assets/images/safari.jpg',
+      ];
+
+      for (final path in imagePaths) {
+        await precacheImage(AssetImage(path), context);
+      }
+
+      if (mounted) {
+        setState(() => _isInitialized = true);
+      }
+    });
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (_isInitialized) return;
-
-    images = [
-      Image.asset(
-        'assets/images/ski.jpg',
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.4,
-      ),
-      Image.asset(
-        'assets/images/diving.jpg',
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.4,
-      ),
-      Image.asset(
-        'assets/images/randonnee.jpg',
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.4,
-      ),
-      Image.asset(
-        'assets/images/safari.jpg',
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.4,
-      ),
-    ];
-
-    for (var img in images) {
-      precacheImage(img.image, context);
-    }
-
     _activities = [
       {
-        'image': images[0],
+        'image': const AssetImage('assets/images/ski.jpg'),
         'title': 'Ski',
         'description':
             "Vivez l’hiver autrement avec DeltaX ! Entre descentes vertigineuses et paysages enneigés...",
       },
       {
-        'image': images[1],
+        'image': const AssetImage('assets/images/diving.jpg'),
         'title': 'Plongée sous-marine',
         'description': "Avec DeltaX, explorez un monde sous-marin caché...",
       },
       {
-        'image': images[2],
+        'image': const AssetImage('assets/images/randonnee.jpg'),
         'title': 'Randonnée',
         'description':
             "Découvrez la beauté naturelle de l’Algérie à travers nos randonnées organisées...",
       },
       {
-        'image': images[3],
+        'image': const AssetImage('assets/images/safari.jpg'),
         'title': 'Safari',
         'description':
             "Partez à la découverte des grands espaces algériens avec nos safaris en 4x4...",
       },
     ];
-
-    _isInitialized = true;
   }
 
-  ///  Exemple d’événements (tu pourras ensuite les charger depuis un provider)
+  // Exemple d’événements (tu pourras ensuite les charger depuis un provider)
   final List<Map<String, dynamic>> _allEvents = [
     {
       'image': 'assets/images/diving.jpg',
@@ -141,64 +124,73 @@ class _AccueilPageState extends State<AccueilPage> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 viewportFraction: 1,
                 autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 500),
                 onPageChanged: (index, reason) {
                   setState(() => _currentIndex = index);
                 },
               ),
               items: _activities.map((activity) {
-                return Builder(
-                  builder: (context) => Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      ClipRRect(child: activity['image']),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.6),
-                            ],
-                          ),
-                        ),
+                return Stack(
+                  alignment: Alignment.bottomCenter,
+
+                  children: [
+                    // Uses DecorationImage with preloaded AssetImage
+                    FadeInImage(
+                      placeholder: const AssetImage(
+                        'assets/images/placeholder.jpg',
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 30,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              activity['title']!,
-                              style: const TextStyle(
-                                fontSize: 22,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              activity['description']!,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                      image: activity['image'],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      fadeInDuration: const Duration(milliseconds: 400),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.6),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ), // Text overlay
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 30,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            activity['title'],
+                            style: const TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            activity['description'],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 );
               }).toList(),
             ),
-
             const SizedBox(height: 30),
 
             // ====== UPCOMING EVENTS SECTION ======

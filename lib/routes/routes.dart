@@ -13,6 +13,7 @@ import 'package:deltax/ui/screens/splash.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes {
+  static const String root = '/';
   static const String connexion = '/connexion';
   static const String inscription = '/inscription';
   static const String profil = '/profil';
@@ -27,6 +28,8 @@ class AppRoutes {
   static const String contact = '/contact';
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case root : 
+        return MaterialPageRoute(builder: (_) => const Accueil());
       case connexion:
         return MaterialPageRoute(builder: (_) => const Connexion());
       case inscription:

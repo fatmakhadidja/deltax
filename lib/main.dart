@@ -3,17 +3,30 @@ import 'package:deltax/core/providers/user_provider.dart';
 import 'package:deltax/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/date_symbol_data_local.dart'; 
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // <-- important
-  await initializeDateFormatting('fr_FR', null); // initialize locale data
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('fr_FR', null);
+  final context = WidgetsBinding.instance.renderViewElement;
+  final images = [
+    'assets/images/ski.jpg',
+    'assets/images/diving.jpg',
+    'assets/images/randonnee.jpg',
+    'assets/images/safari.jpg',
+  ];
+
+  if (context != null) {
+    for (final path in images) {
+      await precacheImage(AssetImage(path), context);
+    }
+  }
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => NavigationProvider()), 
+        ChangeNotifierProvider(create: (_) => NavigationProvider()),
       ],
       child: const MyApp(), // mark const
     ),
@@ -32,9 +45,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.accueil,
+      initialRoute: AppRoutes.root,
       onGenerateRoute: AppRoutes.generateRoute,
-      locale: const Locale('fr', 'FR'), 
+      locale: const Locale('fr', 'FR'),
     );
   }
 }
