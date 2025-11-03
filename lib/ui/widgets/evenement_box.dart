@@ -28,7 +28,7 @@ class EvenementBox extends StatelessWidget {
     required this.prix,
     required this.partenaire,
     required this.partenaireDescription,
-    required this.location
+    required this.location,
   });
 
   @override
@@ -56,7 +56,9 @@ class EvenementBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
                 child: Image.asset(
                   imageUrl,
                   height: 160,
@@ -69,17 +71,29 @@ class EvenementBox extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(titre,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text(
+                      titre,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today, size: 16, color: AppColors.pink),
+                        const Icon(
+                          Icons.calendar_today,
+                          size: 16,
+                          color: AppColors.pink,
+                        ),
                         const SizedBox(width: 6),
                         Text(dateFormat.format(date)),
                         const SizedBox(width: 10),
-                        const Icon(Icons.access_time, size: 16, color: AppColors.pink),
+                        const Icon(
+                          Icons.access_time,
+                          size: 16,
+                          color: AppColors.pink,
+                        ),
                         const SizedBox(width: 4),
                         Text(heureFormat.format(date)),
                       ],
@@ -87,26 +101,38 @@ class EvenementBox extends StatelessWidget {
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(Icons.timelapse, size: 16, color: AppColors.pink),
+                        const Icon(
+                          Icons.timelapse,
+                          size: 16,
+                          color: AppColors.pink,
+                        ),
                         const SizedBox(width: 6),
                         Text(
-                            '${duree.inHours}h${(duree.inMinutes % 60).toString().padLeft(2, '0')}min'),
+                          '${duree.inHours}h${(duree.inMinutes % 60).toString().padLeft(2, '0')}min',
+                        ),
                       ],
                     ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(Icons.location_on, size: 16, color: AppColors.pink),
+                        const Icon(
+                          Icons.location_on,
+                          size: 16,
+                          color: AppColors.pink,
+                        ),
                         const SizedBox(width: 6),
                         Expanded(child: Text(lieu)),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Text('$prix DZD',
-                        style: const TextStyle(
-                            color: AppColors.pink,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold)),
+                    Text(
+                      '$prix DZD',
+                      style: const TextStyle(
+                        color: AppColors.pink,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
@@ -129,7 +155,10 @@ class EvenementBox extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const Text('Détails'),
+                        child: const Text(
+                          'Détails',
+                          style: TextStyle(color: AppColors.darkGrey),
+                        ),
                       ),
                     ),
                   ],
@@ -139,15 +168,25 @@ class EvenementBox extends StatelessWidget {
           ),
           if (isPast)
             Positioned.fill(
-              child: Container(color: Colors.black.withOpacity(0.4)),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.black.withOpacity(0.4),
+                ),
+              ),
             ),
           if (isPast)
             const Positioned(
               top: 8,
               left: 8,
               child: Chip(
-                label: Text('Terminé',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                label: Text(
+                  'Terminé',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 backgroundColor: Colors.redAccent,
               ),
             ),

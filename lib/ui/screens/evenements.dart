@@ -79,6 +79,7 @@ class _EvenementsState extends State<Evenements> {
   String _selectedCategorie = "Toutes";
   String _selectedPartenaire = "Tous";
   String _selectedWilaya = "Toutes";
+  String _selectedStatut = "Tous";
 
   // Listes d'options
   final List<String> _categories = [
@@ -94,6 +95,7 @@ class _EvenementsState extends State<Evenements> {
     "AquaLife",
     "SkyTeam",
   ];
+  final List<String> _statuts = ["Tous", "Terminé", "Non terminé"];
   final List<String> _wilayas = [
     "Toutes",
     "01 - Adrar",
@@ -182,8 +184,16 @@ class _EvenementsState extends State<Evenements> {
             (_selectedWilaya == "Toutes") ||
             event['wilaya'] == _selectedWilaya.split(' - ').last.trim();
         final matchDate = !_filtersApplied || event['date'].isAfter(now);
+        final matchesStatut =
+            (_selectedStatut == "Tous") ||
+            (_selectedStatut == "Terminé" && event['date'].isBefore(now)) ||
+            (_selectedStatut == "Non terminé" && event['date'].isAfter(now));
 
-        return matchCategorie && matchPartenaire && matchesWilaya && matchDate;
+        return matchCategorie &&
+            matchPartenaire &&
+            matchesWilaya &&
+            matchesStatut &&
+            matchDate;
       }).toList();
     });
   }
@@ -288,7 +298,6 @@ class _EvenementsState extends State<Evenements> {
 
   // Carte popup
   Widget _buildPopupCard(Map<String, dynamic> event, BuildContext context) {
-
     return Card(
       margin: const EdgeInsets.all(8),
       elevation: 5,
@@ -304,23 +313,23 @@ class _EvenementsState extends State<Evenements> {
                 context.read<NavigationProvider>().setIndex(1);
               },
               child: GestureDetector(
-                onTap:(){
-Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EvenementDetails(
-                                location: event['location'],
-                                imageUrl: event['image'],
-                                titre: event['titre'],
-                                date: event['date'],
-                                duree: event['duree'],
-                                lieu: event['lieu'],
-                                prix: event['prix'],
-                                partenaire: event['partenaire'],
-                                partenaireDescription: 'description',
-                              ),
-                            ),
-                          );
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EvenementDetails(
+                        location: event['location'],
+                        imageUrl: event['image'],
+                        titre: event['titre'],
+                        date: event['date'],
+                        duree: event['duree'],
+                        lieu: event['lieu'],
+                        prix: event['prix'],
+                        partenaire: event['partenaire'],
+                        partenaireDescription: 'description',
+                      ),
+                    ),
+                  );
                 },
                 child: Text(
                   event['titre'],
@@ -479,28 +488,16 @@ Navigator.push(
                           });
                         },
                       ),
-                      OutlinedButton(
-                        onPressed: _applyFilters,
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                            color: _filtersApplied
-                                ? AppColors.pink
-                                : Colors.grey,
-                            width: 1.5,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Text(
-                          "Non terminé",
-                          style: TextStyle(
-                            color: _filtersApplied
-                                ? AppColors.pink
-                                : Colors.grey,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                      _buildFilterDropdown(
+                        label: "Statut",
+                        value: _selectedStatut,
+                        items: _statuts,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedStatut = value!;
+                            _updateDisplayedEvents();
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -517,7 +514,7 @@ Navigator.push(
                 else
                   ..._displayedEvents.map(
                     (event) => EvenementBox(
-                      location : event['location'],
+                      location: event['location'],
                       imageUrl: event['image'],
                       titre: event['titre'],
                       date: event['date'],
