@@ -32,7 +32,7 @@ class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case root : 
-        return MaterialPageRoute(builder: (_) => const Accueil());
+        return MaterialPageRoute(builder: (_) => const Splash());
       case connexion:
         return MaterialPageRoute(builder: (_) => const Connexion());
       case inscription:

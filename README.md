@@ -1,16 +1,41 @@
-# deltax
+DeltaX – Mobile Event & Adventure Platform
 
-A new Flutter project.
+DeltaX is a mobile application built with Flutter that serves as the mobile companion to the DeltaX web platform (deltax-dz.com). The app enables users to discover, book, and participate in adventure and outdoor event experiences managed by DeltaX.
 
-## Getting Started
+Key Features
 
-This project is a starting point for a Flutter application.
+Event Discovery — Browse a variety of adventure events, including paragliding, scuba diving, hiking, and more. 
+deltax-dz.com
++2
+deltax-dz.com
++2
 
-A few resources to get you started if this is your first Flutter project:
+Event Details — View detailed descriptions, schedules, locations, and images for each event. 
+deltax-dz.com
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+User Registration and Authentication — Create an account or log in to manage bookings and access personalized event suggestions. 
+deltax-dz.com
++1
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Booking Flow — Register for events directly from the app, confirming your participation.
+
+Adventure Experiences — Specific event types such as paragliding 
+deltax-dz.com
+ and scuba diving 
+deltax-dz.com
+.
+
+About and Information — Learn more about DeltaX’s mission, vision, and their commitment to adventure tourism. 
+deltax-dz.com
+
+Responsive UI — The app is designed to be responsive and intuitive for mobile users, with clean navigation and immediate access to event information.
+
+Technology Stack
+
+Flutter (Dart) — for UI and mobile logic
+
+State Management — Provider
+
+Navigation — AppRoutes class
+
+UI Components — Custom widgets for event cards, lists, detail screens, forms, etc.
