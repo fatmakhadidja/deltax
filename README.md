@@ -3,6 +3,10 @@
 DeltaX is a mobile application built with Flutter that serves as the mobile companion to the DeltaX web platform (https://deltax-dz.com).  
 The app enables users to discover, book, and participate in adventure and outdoor event experiences managed by DeltaX.
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0cf34f59-e5bb-4019-8099-33a9a2b4b561" width="640" height="469" alt="deltax"/>
+</p>
+
 ---
 
 ## Key Features
